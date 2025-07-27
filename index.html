@@ -17,7 +17,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #121212 0%, #1e1e1e 100%);
+            background: #0a0a0a; /* Чистый темный фон */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -29,21 +29,20 @@
         }
         
         .container {
-            background: rgba(30, 30, 30, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(20, 20, 20, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.8);
             padding: 30px;
             max-width: 800px;
             width: 100%;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
         h1 {
             font-size: 2.5rem;
             margin-bottom: 20px;
             color: #fff;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
             background: linear-gradient(90deg, #ff758c, #ff7eb3);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -54,11 +53,11 @@
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
-            border-radius: 15px;
+            border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
             background: #000;
-            border: 2px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.1);
         }
         
         #cameraView {
@@ -75,60 +74,46 @@
         }
         
         .controls {
-            margin: 25px 0;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-radius: 12px;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(0,0,0,0.4);
+            border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.1);
         }
         
         .smile-meter {
-            height: 10px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 10px;
+            height: 8px;
+            background: rgba(0,0,0,0.6);
+            border-radius: 8px;
             overflow: hidden;
             margin: 15px 0;
-            position: relative;
         }
         
         .smile-progress {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
-            border-radius: 10px;
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
+            border-radius: 8px;
             transition: width 0.3s ease;
-            box-shadow: 0 0 10px rgba(255,154,158,0.5);
         }
         
         .message {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin: 15px 0;
-            min-height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #eee;
+            min-height: 40px;
+            color: #ddd;
         }
         
         .btn {
-            background: linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%);
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
             border: none;
             color: white;
-            padding: 12px 30px;
-            font-size: 1.1rem;
-            border-radius: 50px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            border-radius: 30px;
             cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+            margin-top: 10px;
+            box-shadow: 0 3px 10px rgba(255, 117, 140, 0.4);
         }
         
         /* Стили для газеты */
@@ -139,58 +124,42 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 1000;
             align-items: center;
             justify-content: center;
-            animation: fadeIn 0.5s ease;
             padding: 20px;
         }
         
         .newspaper {
             width: 100%;
-            max-width: 800px;
-            background: #f8f1e5;
-            padding: 40px;
-            border-radius: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            position: relative;
+            max-width: 700px;
+            background: #f5f0e1;
+            padding: 30px;
+            border-radius: 3px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.6);
             font-family: 'Times New Roman', serif;
             line-height: 1.6;
             text-align: left;
             background-image: 
-                linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-            border: 15px solid #e8d9b5;
-            animation: newspaperAppear 0.7s ease forwards;
-        }
-        
-        .newspaper:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(rgba(248,241,229,0.8), rgba(248,241,229,0.2));
-            pointer-events: none;
+                linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 100% 24px;
+            position: relative;
+            border: 10px solid #e0d5b8;
         }
         
         .newspaper-header {
-            border-bottom: 3px double #000;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
             text-align: center;
         }
         
         .newspaper-title {
-            font-size: 3rem;
+            font-size: 2.2rem;
             margin: 0;
             color: #000;
             font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 3px;
             font-family: 'Georgia', serif;
         }
         
@@ -198,58 +167,42 @@
             font-style: italic;
             color: #555;
             margin-top: 5px;
-            font-size: 1.1rem;
         }
         
         .newspaper-headline {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            margin: 25px 0;
+            margin: 20px 0;
             color: #8b0000;
             text-align: center;
             font-family: 'Georgia', serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
         }
         
         .newspaper-photo {
             width: 100%;
-            border: 5px double #000;
-            margin: 25px 0;
-            filter: grayscale(50%) contrast(110%) brightness(90%);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            border: 3px solid #000;
+            margin: 20px 0;
+            filter: grayscale(30%) contrast(120%);
         }
         
         .newspaper-content {
             column-count: 2;
-            column-gap: 40px;
-            margin: 25px 0;
+            column-gap: 30px;
         }
         
         .newspaper-content p {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: justify;
-            hyphens: auto;
-            font-size: 1.1rem;
             color: #333;
+            font-size: 1rem;
         }
         
         .newspaper-quote {
             font-style: italic;
-            border-left: 4px solid #8b0000;
-            padding-left: 20px;
-            margin: 25px 0;
+            border-left: 3px solid #8b0000;
+            padding-left: 15px;
+            margin: 20px 0;
             color: #222;
-            font-size: 1.2rem;
-            font-family: 'Georgia', serif;
-        }
-        
-        .newspaper-quote footer {
-            display: block;
-            text-align: right;
-            margin-top: 10px;
-            font-size: 1rem;
-            color: #555;
         }
         
         .close-btn {
@@ -259,58 +212,19 @@
             background: #8b0000;
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
-            z-index: 101;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            transform: rotate(90deg);
-            background: #600;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes newspaperAppear {
-            from { 
-                transform: scale(0.9) rotate(-2deg);
-                opacity: 0;
-            }
-            to { 
-                transform: scale(1) rotate(0);
-                opacity: 1;
-            }
         }
         
         @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-            }
-            h1 {
-                font-size: 2rem;
-            }
             .newspaper-content {
                 column-count: 1;
             }
             .newspaper {
-                padding: 25px;
-            }
-            .newspaper-title {
-                font-size: 2rem;
-            }
-            .newspaper-headline {
-                font-size: 1.5rem;
+                padding: 20px;
             }
         }
     </style>
@@ -328,37 +242,35 @@
             <div class="smile-meter">
                 <div class="smile-progress" id="smileProgress"></div>
             </div>
-            <div class="message" id="message">Включаю камеру...</div>
+            <div class="message" id="message">Загружаю камеру...</div>
             <button class="btn" id="retryBtn">Попробовать снова</button>
         </div>
     </div>
 
     <!-- Газета -->
     <div class="newspaper-container" id="newspaperContainer">
-        <div class="newspaper" id="newspaper">
+        <div class="newspaper">
             <button class="close-btn" id="closeBtn">×</button>
             <div class="newspaper-header">
-                <h2 class="newspaper-title">Ежедневные новости</h2>
+                <h2 class="newspaper-title">Специальный выпуск</h2>
                 <p class="newspaper-date" id="newspaperDate"></p>
             </div>
             
-            <h3 class="newspaper-headline">Эксклюзив: Улыбка, покорившая мир!</h3>
+            <h3 class="newspaper-headline">Улыбка дня!</h3>
             
             <img id="newspaperPhoto" class="newspaper-photo">
             
             <div class="newspaper-content">
-                <p>Сегодня нашим фотографам удалось запечатлеть поистине уникальный момент. Эта искренняя улыбка, полная тепла и нежности, стала настоящим открытием дня.</p>
+                <p>Нам посчастливилось запечатлеть этот редкий момент искренней радости. Подобные мгновения напоминают нам о простых, но важных вещах в жизни.</p>
                 
-                <p>По словам экспертов в области психологии, такие проявления эмоций оказывают положительное влияние не только на самого человека, но и на окружающих. "Это пример подлинной эмоциональной открытости", - комментирует доктор психологических наук Елена Смирнова.</p>
+                <p>Психологи утверждают, что искренняя улыбка способна поднять настроение не только вам, но и окружающим. Это универсальный язык доброты, понятный всем.</p>
                 
                 <div class="newspaper-quote">
-                    "В мире, где так много фальши, настоящая улыбка становится редким сокровищем. Она способна растопить лёд даже в самых холодных сердцах."
-                    <footer>— Профессор И. Петров</footer>
+                    "Настоящая улыбка идет от сердца и способна растопить даже самое холодное сердце."
+                    <footer>— Доктор психологии</footer>
                 </div>
                 
-                <p>Очевидцы рассказывают, что в момент съёмки в воздухе витала особая атмосфера. "Это было похоже на маленькое чудо", - поделилась одна из свидетельниц.</p>
-                
-                <p>Редакция рекомендует сохранить этот снимок как напоминание о том, что самые простые моменты часто оказываются самыми ценными. Ведь, как известно, "улыбка - это универсальный язык доброты".</p>
+                <p>Сохраните этот снимок как напоминание о прекрасных моментах. Пусть он вдохновляет вас дарить тепло окружающим.</p>
             </div>
         </div>
     </div>
@@ -414,6 +326,7 @@
                         if (isSmile) {
                             smileCounter++;
                             smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
+                            messageElement.textContent = `Улыбка обнаружена! ${smileCounter}/${smileThreshold}`;
                             
                             if (smileCounter >= smileThreshold && !isSmiling) {
                                 isSmiling = true;
@@ -422,11 +335,8 @@
                         } else {
                             smileCounter = Math.max(0, smileCounter - 1);
                             smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
+                            messageElement.textContent = "Улыбнитесь шире!";
                         }
-                        
-                        messageElement.textContent = isSmile ? 
-                            `Улыбка обнаружена! ${smileCounter}/${smileThreshold}` : 
-                            "Улыбнитесь шире 😊";
                     }
                 }
             }
@@ -436,7 +346,7 @@
         
         // Запуск камеры
         async function startCamera() {
-            messageElement.textContent = "Запускаю камеру...";
+            messageElement.textContent = "Запрашиваю доступ к камере...";
             
             try {
                 const camera = new Camera(videoElement, {
@@ -456,7 +366,7 @@
             } catch (error) {
                 console.error('Ошибка камеры:', error);
                 messageElement.innerHTML = `
-                    ❌ Ошибка: <strong>${error.message || 'Неизвестная ошибка'}</strong><br>
+                    ❌ Ошибка: ${error.message || 'Не удалось получить доступ к камере'}<br>
                     Пожалуйста:<br>
                     1. Разрешите доступ к камере<br>
                     2. Обновите страницу<br>
@@ -511,7 +421,7 @@
             
             for (let i = 0; i < data.length; i += 4) {
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                const noise = Math.random() * 50;
+                const noise = Math.random() * 40;
                 const value = avg > 150 + noise ? 220 : avg > 100 + noise ? 180 : 50;
                 data[i] = data[i + 1] = data[i + 2] = value;
             }
@@ -521,26 +431,8 @@
         
         // Звук затвора камеры
         function playCaptureSound() {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(1500, audioContext.currentTime);
-                oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.3);
-                
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
-                
-                oscillator.start();
-                oscillator.stop(audioContext.currentTime + 0.3);
-            } catch (e) {
-                console.log('Аудио не поддерживается:', e);
-            }
+            const sound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-camera-shutter-click-1133.mp3');
+            sound.play().catch(e => console.log('Не удалось воспроизвести звук:', e));
         }
         
         // Кнопка повтора
