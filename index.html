@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Представь, что раскрыла крупное дело)</title>
+    <title>Сможешь ли ты расскрыть это дело?</title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
@@ -267,7 +267,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Представь, что раскрыла крупное дело)</h1>
+        <h1>Сможешь ли ты расскрыть это дело?</h1>
         
         <div class="camera-box">
             <video id="cameraView" autoplay playsinline></video>
@@ -402,7 +402,7 @@
                             } else if (progress > 30) {
                                 messageElement.textContent = `Продолжаем расследование... ${Math.floor(progress)}%`;
                             } else {
-                                messageElement.textContent = `Улыбнись, как настоящий детектив! ${Math.floor(progress)}%`;
+                                messageElement.textContent = `Следователи не должны грустить! ${Math.floor(progress)}%`;
                             }
                         }
                     }
@@ -424,7 +424,6 @@
                 });
                 
                 videoElement.srcObject = stream;
-                messageElement.textContent = "Улыбнись, чтобы раскрыть дело!";
                 
                 // Запускаем обнаружение
                 const camera = new Camera(videoElement, {
@@ -437,8 +436,7 @@
             } catch (error) {
                 console.error('Ошибка камеры:', error);
                 messageElement.innerHTML = `
-                    ❌ Ошибка: ${error.message || 'Не удалось получить доступ к камере'}<br>
-                    Пожалуйста:<br>
+                    ❌ Ошибка:
                     1. Разрешите доступ к камере<br>
                     2. Обновите страницу<br>
                     3. Попробуйте другой браузер`;
