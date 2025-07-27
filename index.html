@@ -467,12 +467,26 @@
                 const photoUrl = URL.createObjectURL(blob);
                 newspaperPhoto.src = photoUrl;
                 
-                // Устанавливаем дату
-                newspaperDate.textContent = new Date().toLocaleDateString('ru-RU', {
-                    day: 'numeric',
-                    month: 'long',
-                    year: 'numeric'
-                });
+                // Получаем текущую дату
+const currentDate = new Date();
+
+// Добавляем 4 года
+const futureDate = new Date(
+  currentDate.getFullYear() + 5,
+  currentDate.getMonth(),
+  currentDate.getDate()
+);
+
+// Форматируем дату для газеты (на русском языке)
+const options = { 
+  day: 'numeric', 
+  month: 'long', 
+  year: 'numeric' 
+};
+const formattedDate = futureDate.toLocaleDateString('ru-RU', options);
+
+// Устанавливаем дату в газету
+document.getElementById('newspaperDate').textContent = formattedDate;
                 
                 // Показываем газету
                 showNewspaper();
