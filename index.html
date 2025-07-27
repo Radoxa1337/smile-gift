@@ -62,10 +62,6 @@
             transition: transform 0.3s ease;
         }
         
-        .camera-box:hover {
-            transform: scale(1.02);
-        }
-        
         #cameraView {
             width: 100%;
             display: block;
@@ -112,43 +108,9 @@
             cursor: pointer;
             margin-top: 10px;
             box-shadow: 0 3px 10px rgba(255, 117, 140, 0.4);
-            transition: all 0.3s ease;
         }
         
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.6);
-        }
-        
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideIn {
-            from { 
-                transform: translateY(50px) rotate(2deg);
-                opacity: 0;
-            }
-            to { 
-                transform: translateY(0) rotate(0);
-                opacity: 1;
-            }
-        }
-        
-        @keyframes newspaperFold {
-            0% { 
-                transform: scale(0.8) rotateX(60deg) rotateZ(-10deg);
-                opacity: 0;
-            }
-            100% { 
-                transform: scale(1) rotateX(0) rotateZ(0);
-                opacity: 1;
-            }
-        }
-        
-        /* Стили газеты */
+        /* Стили для газеты */
         .newspaper-container {
             display: none;
             position: fixed;
@@ -156,149 +118,104 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.95);
             z-index: 1000;
-            align-items: center;
-            justify-content: center;
             padding: 20px;
-            animation: fadeIn 0.5s ease;
+            overflow-y: auto; /* Добавляем прокрутку */
+        }
+        
+        .newspaper-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px 0;
         }
         
         .newspaper {
             width: 100%;
-            max-width: 700px;
-            background: #f8f1e5;
+            background: #f5f0e1;
             padding: 40px;
-            border-radius: 5px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+            border-radius: 3px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.6);
             font-family: 'Times New Roman', serif;
             line-height: 1.6;
             text-align: left;
-            position: relative;
-            border: 15px solid #e0d5b8;
-            transform-style: preserve-3d;
-            animation: newspaperFold 1s ease forwards;
             background-image: 
-                linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        
-        .newspaper:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(rgba(248,241,229,0.7), rgba(248,241,229,0.3));
-            pointer-events: none;
+                linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 100% 24px;
+            position: relative;
+            border: 10px solid #e0d5b8;
         }
         
         .newspaper-header {
-            border-bottom: 3px double #000;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
             text-align: center;
         }
         
         .newspaper-title {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             margin: 0;
             color: #000;
             font-weight: bold;
             font-family: 'Georgia', serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
         
         .newspaper-date {
             font-style: italic;
             color: #555;
             margin-top: 5px;
-            font-size: 1.1rem;
         }
         
         .newspaper-headline {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            margin: 25px 0;
+            margin: 20px 0;
             color: #8b0000;
             text-align: center;
             font-family: 'Georgia', serif;
-            animation: slideIn 0.8s ease 0.5s both;
         }
         
         .newspaper-photo {
             width: 100%;
-            border: 5px double #000;
-            margin: 25px 0;
-            filter: grayscale(50%) contrast(120%) brightness(90%);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            animation: slideIn 0.8s ease 0.7s both;
+            border: 3px solid #000;
+            margin: 20px 0;
+            filter: grayscale(30%) contrast(120%);
         }
         
         .newspaper-content {
             column-count: 2;
-            column-gap: 40px;
-            margin: 25px 0;
+            column-gap: 30px;
         }
         
         .newspaper-content p {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: justify;
-            hyphens: auto;
-            font-size: 1.1rem;
             color: #333;
-            animation: fadeIn 1s ease 1s both;
-        }
-        
-        .newspaper-content p:nth-child(2) {
-            animation-delay: 1.2s;
+            font-size: 1rem;
         }
         
         .newspaper-quote {
             font-style: italic;
-            border-left: 4px solid #8b0000;
-            padding-left: 20px;
-            margin: 25px 0;
+            border-left: 3px solid #8b0000;
+            padding-left: 15px;
+            margin: 20px 0;
             color: #222;
-            font-size: 1.2rem;
-            font-family: 'Georgia', serif;
-            animation: fadeIn 1s ease 1.5s both;
-        }
-        
-        .newspaper-quote footer {
-            display: block;
-            text-align: right;
-            margin-top: 10px;
-            font-size: 1rem;
-            color: #555;
         }
         
         .close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
+            position: fixed;
+            top: 30px;
+            right: 30px;
             background: #8b0000;
             color: white;
             border: none;
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             cursor: pointer;
-            z-index: 101;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            transition: all 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            transform: rotate(90deg) scale(1.1);
-            background: #600;
+            z-index: 1001;
         }
         
         @media (max-width: 768px) {
@@ -306,13 +223,17 @@
                 column-count: 1;
             }
             .newspaper {
-                padding: 25px;
+                padding: 20px;
             }
             .newspaper-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
             .newspaper-headline {
-                font-size: 1.6rem;
+                font-size: 1.5rem;
+            }
+            .close-btn {
+                top: 15px;
+                right: 15px;
             }
         }
     </style>
@@ -336,25 +257,33 @@
 
     <!-- Газета -->
     <div class="newspaper-container" id="newspaperContainer">
-        <div class="newspaper">
-            <button class="close-btn" id="closeBtn">×</button>
-            <div class="newspaper-header">
-                <h2 class="newspaper-title">Сенсационные новости</h2>
-                <p class="newspaper-date" id="newspaperDate"></p>
-            </div>
-            
-            <h3 class="newspaper-headline">Эксклюзив: Улыбка, покорившая мир!</h3>
-            
-            <img id="newspaperPhoto" class="newspaper-photo">
-            
-            <div class="newspaper-content">
-                <p>Сегодня нашим фотографам удалось запечатлеть поистине уникальный момент. Эта искренняя улыбка, полная тепла и нежности, стала настоящим открытием дня. По словам очевидцев, в момент съёмки в воздухе витала особая атмосфера счастья.</p>
+        <button class="close-btn" id="closeBtn">×</button>
+        <div class="newspaper-wrapper">
+            <div class="newspaper">
+                <div class="newspaper-header">
+                    <h2 class="newspaper-title">Сенсационные новости</h2>
+                    <p class="newspaper-date" id="newspaperDate"></p>
+                </div>
                 
-                <p>Эксперты в области психологии утверждают, что такие проявления эмоций оказывают положительное влияние не только на самого человека, но и на окружающих. "Это пример подлинной эмоциональной открытости", - комментирует доктор психологических наук Елена Смирнова.</p>
+                <h3 class="newspaper-headline">Эксклюзив: Улыбка, покорившая мир!</h3>
                 
-                <div class="newspaper-quote">
-                    "В мире, где так много фальши, настоящая улыбка становится редким сокровищем. Она способна растопить лёд даже в самых холодных сердцах и напомнить нам о том, что истинное счастье - в простых моментах."
-                    <footer>— Профессор И. Петров</footer>
+                <img id="newspaperPhoto" class="newspaper-photo">
+                
+                <div class="newspaper-content">
+                    <p>Сегодня нашим фотографам удалось запечатлеть поистине уникальный момент. Эта искренняя улыбка, полная тепла и нежности, стала настоящим открытием дня. По словам очевидцев, в момент съёмки в воздухе витала особая атмосфера счастья.</p>
+                    
+                    <p>Эксперты в области психологии утверждают, что такие проявления эмоций оказывают положительное влияние не только на самого человека, но и на окружающих. "Это пример подлинной эмоциональной открытости", - комментирует доктор психологических наук Елена Смирнова.</p>
+                    
+                    <p>Исследования показывают, что искренняя улыбка способна снижать уровень стресса, улучшать настроение и даже укреплять иммунную систему. По данным последних исследований, люди, которые часто улыбаются, живут в среднем на 7 лет дольше.</p>
+                    
+                    <div class="newspaper-quote">
+                        "В мире, где так много фальши, настоящая улыбка становится редким сокровищем. Она способна растопить лёд даже в самых холодных сердцах и напомнить нам о том, что истинное счастье - в простых моментах."
+                        <footer>— Профессор И. Петров</footer>
+                    </div>
+                    
+                    <p>Редакция рекомендует сохранить этот снимок как напоминание о прекрасных моментах. Пусть он вдохновляет вас дарить тепло окружающим и находить поводы для радости в повседневной жизни.</p>
+                    
+                    <p>Как показывает практика, даже небольшая улыбка может изменить весь день. Попробуйте улыбнуться незнакомцу - и вы увидите, как мир станет немного добрее.</p>
                 </div>
             </div>
         </div>
@@ -516,8 +445,11 @@
         
         // Показать газету
         function showNewspaper() {
-            newspaperContainer.style.display = 'flex';
+            newspaperContainer.style.display = 'block';
             document.body.style.overflow = 'hidden';
+            
+            // Прокручиваем вверх газеты
+            newspaperContainer.scrollTo(0, 0);
         }
         
         // Скрыть газету
