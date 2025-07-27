@@ -120,40 +120,135 @@
             box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
         }
         
-        .result-section {
+        /* Стили для газеты */
+        .newspaper-container {
             display: none;
-            animation: fadeIn 1s ease;
-            padding: 20px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 15px;
-            color: #333;
-            margin-top: 20px;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease;
         }
         
         .newspaper {
-            font-family: 'Georgia', serif;
-            line-height: 1.8;
+            width: 90%;
+            max-width: 800px;
+            background: #fff5e6;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            position: relative;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.6;
             text-align: left;
+            background-image: 
+                linear-gradient(rgba(0,0,0,0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
         
-        .newspaper h2 {
-            font-size: 2rem;
-            border-bottom: 2px solid #333;
+        .newspaper:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            pointer-events: none;
+        }
+        
+        .newspaper-header {
+            border-bottom: 2px solid #000;
             padding-bottom: 10px;
-            margin-bottom: 15px;
-            color: #d32f2f;
+            margin-bottom: 20px;
+            text-align: center;
         }
         
-        #capturedPhoto {
+        .newspaper-title {
+            font-size: 2.5rem;
+            margin: 0;
+            color: #000;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .newspaper-date {
+            font-style: italic;
+            color: #555;
+        }
+        
+        .newspaper-headline {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #d32f2f;
+            text-align: center;
+            font-family: 'Georgia', serif;
+        }
+        
+        .newspaper-photo {
             width: 100%;
             border: 1px solid #ddd;
-            margin: 15px 0;
-            filter: sepia(0.3) contrast(1.1);
+            margin: 20px 0;
+            filter: grayscale(80%) contrast(120%);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .newspaper-content {
+            column-count: 2;
+            column-gap: 30px;
+            margin: 20px 0;
+        }
+        
+        .newspaper-content p {
+            margin-bottom: 15px;
+            text-align: justify;
+            hyphens: auto;
+        }
+        
+        .newspaper-quote {
+            font-style: italic;
+            border-left: 3px solid #d32f2f;
+            padding-left: 15px;
+            margin: 20px 0;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #d32f2f;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1rem;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes newspaperAppear {
+            from { 
+                transform: scale(0.8) rotate(-2deg);
+                opacity: 0;
+            }
+            to { 
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
         }
         
         @media (max-width: 768px) {
@@ -162,6 +257,12 @@
             }
             h1 {
                 font-size: 2rem;
+            }
+            .newspaper-content {
+                column-count: 1;
+            }
+            .newspaper {
+                padding: 20px;
             }
         }
     </style>
@@ -182,19 +283,34 @@
             <div class="message" id="message">Включаю камеру...</div>
             <button class="btn" id="retryBtn">Попробовать снова</button>
         </div>
-        
-        <div class="result-section" id="result">
-            <div class="newspaper">
-                <h2>Специальный выпуск</h2>
-                <p id="date"></p>
-                <p><strong>Экстренные новости!</strong></p>
-                <img id="capturedPhoto">
-                <p>Нам удалось запечатлеть этот редкий момент искренней радости! Согласно исследованиям, подобные моменты положительно влияют на здоровье и продолжительность жизни.</p>
-                <p>Психологи утверждают, что улыбка способна изменить не только ваше настроение, но и мир вокруг. Сохраните этот снимок как напоминание о светлых моментах.</p>
-                <blockquote>
-                    "Самая красивая улыбка - та, что преодолела слёзы"
-                    <footer>— Неизвестный автор</footer>
-                </blockquote>
+    </div>
+
+    <!-- Газета, которая появится после улыбки -->
+    <div class="newspaper-container" id="newspaperContainer">
+        <div class="newspaper" id="newspaper">
+            <button class="close-btn" id="closeBtn">×</button>
+            <div class="newspaper-header">
+                <h2 class="newspaper-title">Специальный выпуск</h2>
+                <p class="newspaper-date" id="newspaperDate"></p>
+            </div>
+            
+            <h3 class="newspaper-headline">Сенсационное фото!</h3>
+            
+            <img id="newspaperPhoto" class="newspaper-photo">
+            
+            <div class="newspaper-content">
+                <p>Нашим фотографам удалось запечатлеть этот редкий момент искренней радости! Как показывают последние исследования, именно такие моменты делают жизнь по-настоящему ценной.</p>
+                
+                <p>Эксперты утверждают, что улыбка, подобная вашей, способна растопить лёд даже в самых сложных ситуациях. "Это пример настоящей, неподдельной эмоции", - комментирует доктор психологических наук.</p>
+                
+                <div class="newspaper-quote">
+                    "Иногда нужно разойтись, чтобы понять, как сильно ты хочешь быть вместе"
+                    <footer>— Анонимный источник</footer>
+                </div>
+                
+                <p>По словам очевидцев, в момент съёмки в воздухе витала особая атмосфера тепла и нежности. Многие прохожие не смогли сдержать улыбок, наблюдая за этой сценой.</p>
+                
+                <p>Редакция газеты рекомендует сохранить этот снимок как напоминание о том, что настоящие чувства всегда находят способ проявиться, даже через расстояние и время.</p>
             </div>
         </div>
     </div>
@@ -206,21 +322,16 @@
         const canvasCtx = canvasElement.getContext('2d');
         const messageElement = document.getElementById('message');
         const smileProgress = document.getElementById('smileProgress');
-        const resultSection = document.getElementById('result');
-        const capturedPhoto = document.getElementById('capturedPhoto');
-        const dateElement = document.getElementById('date');
         const retryBtn = document.getElementById('retryBtn');
+        const newspaperContainer = document.getElementById('newspaperContainer');
+        const newspaperPhoto = document.getElementById('newspaperPhoto');
+        const newspaperDate = document.getElementById('newspaperDate');
+        const closeBtn = document.getElementById('closeBtn');
         
         // Переменные состояния
         let isSmiling = false;
         let smileCounter = 0;
-        const smileThreshold = 5; // Количество кадров с улыбкой
-        
-        // Проверка поддержки MediaPipe
-        if (typeof FaceMesh === 'undefined') {
-            messageElement.innerHTML = 'Библиотека не загрузилась. Проверьте интернет-соединение.';
-            retryBtn.style.display = 'block';
-        }
+        const smileThreshold = 5;
         
         // Инициализация FaceMesh
         const faceMesh = new FaceMesh({
@@ -245,13 +356,12 @@
             
             if (results.multiFaceLandmarks) {
                 for (const landmarks of results.multiFaceLandmarks) {
-                    // Определяем улыбку по расстоянию между уголками губ
                     const leftMouth = landmarks[61];
                     const rightMouth = landmarks[291];
                     
                     if (leftMouth && rightMouth) {
                         const mouthWidth = Math.abs(leftMouth.x - rightMouth.x);
-                        const isSmile = mouthWidth > 0.15; // Эмпирический порог
+                        const isSmile = mouthWidth > 0.15;
                         
                         if (isSmile) {
                             smileCounter++;
@@ -292,7 +402,6 @@
                 await camera.start();
                 messageElement.textContent = "Смотрите в камеру и улыбайтесь!";
                 
-                // Установка размеров canvas
                 canvasElement.width = videoElement.videoWidth;
                 canvasElement.height = videoElement.videoHeight;
                 
@@ -310,36 +419,44 @@
         
         // Захват фото
         function capturePhoto() {
-            // Создаем временный canvas
             const tempCanvas = document.createElement('canvas');
             tempCanvas.width = videoElement.videoWidth;
             tempCanvas.height = videoElement.videoHeight;
             const tempCtx = tempCanvas.getContext('2d');
             
-            // Рисуем кадр с видео
             tempCtx.drawImage(videoElement, 0, 0, tempCanvas.width, tempCanvas.height);
-            
-            // Применяем эффекты
             applyNewspaperEffect(tempCanvas);
             
-            // Показываем результат
-            capturedPhoto.src = tempCanvas.toDataURL('image/jpeg');
-            dateElement.textContent = new Date().toLocaleDateString('ru-RU', {
+            newspaperPhoto.src = tempCanvas.toDataURL('image/jpeg');
+            newspaperDate.textContent = new Date().toLocaleDateString('ru-RU', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric'
             });
             
-            // Показываем результат
-            resultSection.style.display = 'block';
-            
-            // Воспроизводим звук
+            showNewspaper();
             playCaptureSound();
             
-            // Останавливаем камеру
             if (videoElement.srcObject) {
                 videoElement.srcObject.getTracks().forEach(track => track.stop());
             }
+        }
+        
+        // Показать газету
+        function showNewspaper() {
+            newspaperContainer.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Анимация появления
+            const newspaper = document.getElementById('newspaper');
+            newspaper.style.animation = 'newspaperAppear 0.5s ease forwards';
+        }
+        
+        // Скрыть газету
+        function hideNewspaper() {
+            newspaperContainer.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            window.location.reload();
         }
         
         // Эффект газетной печати
@@ -349,13 +466,9 @@
             const data = imageData.data;
             
             for (let i = 0; i < data.length; i += 4) {
-                // Преобразуем в оттенки серого
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
                 const noise = Math.random() * 50;
-                
-                // Создаем эффект газетной печати
                 const value = avg > 150 + noise ? 220 : avg > 100 + noise ? 180 : 50;
-                
                 data[i] = data[i + 1] = data[i + 2] = value;
             }
             
@@ -390,6 +503,9 @@
         retryBtn.addEventListener('click', () => {
             window.location.reload();
         });
+        
+        // Кнопка закрытия газеты
+        closeBtn.addEventListener('click', hideNewspaper);
         
         // Запускаем при загрузке
         startCamera();
