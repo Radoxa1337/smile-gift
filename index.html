@@ -3,63 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Улыбнись для сюрприза</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+    <title>Улыбнись для сюрприза!</title>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/face_mesh.js" crossorigin="anonymous"></script>
     <style>
-        :root {
-            --primary: #ff6b6b;
-            --secondary: #4ecdc4;
-            --dark: #292f36;
-            --light: #f7fff7;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: var(--dark);
+            padding: 20px;
+            color: white;
             text-align: center;
-            overflow-x: hidden;
         }
         
         .container {
-            max-width: 800px;
-            width: 90%;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             padding: 30px;
-            position: relative;
-            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
         h1 {
-            font-family: 'Playfair Display', serif;
-            color: var(--primary);
+            font-size: 2.5rem;
             margin-bottom: 20px;
-            font-size: 2.2rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
         
-        .camera-container {
+        .camera-box {
             position: relative;
             width: 100%;
-            max-width: 500px;
-            margin: 0 auto 30px;
-            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-        
-        .camera-container:hover {
-            transform: scale(1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            background: #000;
         }
         
         #cameraView {
@@ -67,40 +61,73 @@
             display: block;
         }
         
-        .smile-indicator {
-            height: 5px;
-            background: #e0e0e0;
-            border-radius: 5px;
-            margin-top: 10px;
+        #resultCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .controls {
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 12px;
+        }
+        
+        .smile-meter {
+            height: 10px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
             overflow: hidden;
+            margin: 15px 0;
             position: relative;
         }
         
         .smile-progress {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
+            border-radius: 10px;
             transition: width 0.3s ease;
         }
         
-        .instructions {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            font-size: 0.9rem;
-            animation: pulse 2s infinite;
+        .message {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.02); }
-            100% { transform: scale(1); }
+        .btn {
+            background: linear-gradient(90deg, #ff758c 0%, #ff7eb3 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(255, 117, 140, 0.4);
+            transition: all 0.3s ease;
         }
         
-        #result {
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.6);
+        }
+        
+        .result-section {
             display: none;
             animation: fadeIn 1s ease;
+            padding: 20px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 15px;
+            color: #333;
+            margin-top: 20px;
         }
         
         @keyframes fadeIn {
@@ -109,117 +136,263 @@
         }
         
         .newspaper {
-            background: #fff9f9;
-            padding: 30px;
-            border-radius: 5px;
-            position: relative;
-            font-family: 'Playfair Display', serif;
-            line-height: 1.6;
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
             text-align: left;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
         }
         
-        .newspaper:before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
-            pointer-events: none;
-        }
-        
-        .newspaper-header {
-            border-bottom: 2px solid var(--dark);
+        .newspaper h2 {
+            font-size: 2rem;
+            border-bottom: 2px solid #333;
             padding-bottom: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            color: #d32f2f;
         }
         
-        .newspaper-title {
-            font-size: 2.5rem;
-            margin: 0;
-            color: var(--dark);
-            font-weight: 700;
-        }
-        
-        .newspaper-date {
-            font-style: italic;
-            color: #666;
-        }
-        
-        .captured-photo {
+        #capturedPhoto {
             width: 100%;
             border: 1px solid #ddd;
-            margin: 20px 0;
-            filter: grayscale(80%) contrast(120%);
+            margin: 15px 0;
+            filter: sepia(0.3) contrast(1.1);
         }
         
-        .hidden {
-            display: none;
-        }
-        
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: var(--primary);
-            opacity: 0;
-        }
-        
-        footer {
-            margin-top: 30px;
-            font-size: 0.8rem;
-            color: #666;
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Улыбнись для сюрприза!</h1>
+        <h1>😊 Улыбнись для сюрприза!</h1>
         
-        <div id="cameraSection">
-            <div class="camera-container">
-                <video id="cameraView" autoplay muted playsinline></video>
-            </div>
-            
-            <div class="smile-indicator">
-                <div class="smile-progress" id="smileProgress"></div>
-            </div>
-            
-            <div class="instructions">
-                Встаньте перед камерой и улыбнитесь! Система обнаружит вашу улыбку и покажет специальный сюрприз.
-            </div>
+        <div class="camera-box">
+            <video id="cameraView" autoplay playsinline></video>
+            <canvas id="resultCanvas"></canvas>
         </div>
         
-        <div id="result">
+        <div class="controls">
+            <div class="smile-meter">
+                <div class="smile-progress" id="smileProgress"></div>
+            </div>
+            <div class="message" id="message">Включаю камеру...</div>
+            <button class="btn" id="retryBtn">Попробовать снова</button>
+        </div>
+        
+        <div class="result-section" id="result">
             <div class="newspaper">
-                <div class="newspaper-header">
-                    <h2 class="newspaper-title">Специальный Выпуск</h2>
-                    <p class="newspaper-date" id="date"></p>
-                </div>
-                
-                <p><strong>Экстренное сообщение!</strong></p>
-                
-                <img id="capturedPhoto" class="captured-photo">
-                
-                <p>Наши репортёры запечатлели этот редкий момент искренней улыбки. Как показывают последние исследования, именно такие моменты делают жизнь по-настоящему ценной.</p>
-                
-                <p>По словам экспертов, улыбка, подобная вашей, способна растопить лёд даже в самых сложных ситуациях. Мы рекомендуем сохранить этот снимок как напоминание о том, что настоящие чувства всегда находят способ проявиться.</p>
-                
+                <h2>Специальный выпуск</h2>
+                <p id="date"></p>
+                <p><strong>Экстренные новости!</strong></p>
+                <img id="capturedPhoto">
+                <p>Нам удалось запечатлеть этот редкий момент искренней радости! Согласно исследованиям, подобные моменты положительно влияют на здоровье и продолжительность жизни.</p>
+                <p>Психологи утверждают, что улыбка способна изменить не только ваше настроение, но и мир вокруг. Сохраните этот снимок как напоминание о светлых моментах.</p>
                 <blockquote>
-                    "Иногда нужно разойтись, чтобы понять, как сильно ты хочешь быть вместе"
-                    <footer>— Анонимный источник</footer>
+                    "Самая красивая улыбка - та, что преодолела слёзы"
+                    <footer>— Неизвестный автор</footer>
                 </blockquote>
             </div>
         </div>
     </div>
-    
-    <footer>
-        Создано с ❤️ специально для вас
-    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // Элементы страницы
+        const videoElement = document.getElementById('cameraView');
+        const canvasElement = document.getElementById('resultCanvas');
+        const canvasCtx = canvasElement.getContext('2d');
+        const messageElement = document.getElementById('message');
+        const smileProgress = document.getElementById('smileProgress');
+        const resultSection = document.getElementById('result');
+        const capturedPhoto = document.getElementById('capturedPhoto');
+        const dateElement = document.getElementById('date');
+        const retryBtn = document.getElementById('retryBtn');
+        
+        // Переменные состояния
+        let isSmiling = false;
+        let smileCounter = 0;
+        const smileThreshold = 5; // Количество кадров с улыбкой
+        
+        // Проверка поддержки MediaPipe
+        if (typeof FaceMesh === 'undefined') {
+            messageElement.innerHTML = 'Библиотека не загрузилась. Проверьте интернет-соединение.';
+            retryBtn.style.display = 'block';
+        }
+        
+        // Инициализация FaceMesh
+        const faceMesh = new FaceMesh({
+            locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh/${file}`;
+            }
+        });
+        
+        faceMesh.setOptions({
+            maxNumFaces: 1,
+            refineLandmarks: true,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        });
+        
+        faceMesh.onResults(onFaceResults);
+        
+        // Функция обработки результатов
+        function onFaceResults(results) {
+            canvasCtx.save();
+            canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+            
+            if (results.multiFaceLandmarks) {
+                for (const landmarks of results.multiFaceLandmarks) {
+                    // Определяем улыбку по расстоянию между уголками губ
+                    const leftMouth = landmarks[61];
+                    const rightMouth = landmarks[291];
+                    
+                    if (leftMouth && rightMouth) {
+                        const mouthWidth = Math.abs(leftMouth.x - rightMouth.x);
+                        const isSmile = mouthWidth > 0.15; // Эмпирический порог
+                        
+                        if (isSmile) {
+                            smileCounter++;
+                            smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
+                            
+                            if (smileCounter >= smileThreshold && !isSmiling) {
+                                isSmiling = true;
+                                capturePhoto();
+                            }
+                        } else {
+                            smileCounter = Math.max(0, smileCounter - 1);
+                            smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
+                        }
+                        
+                        messageElement.textContent = isSmile ? 
+                            `Улыбка обнаружена! ${smileCounter}/${smileThreshold}` : 
+                            "Улыбнитесь шире 😊";
+                    }
+                }
+            }
+            
+            canvasCtx.restore();
+        }
+        
+        // Запуск камеры
+        async function startCamera() {
+            messageElement.textContent = "Запускаю камеру...";
+            
+            try {
+                const camera = new Camera(videoElement, {
+                    onFrame: async () => {
+                        await faceMesh.send({image: videoElement});
+                    },
+                    width: 640,
+                    height: 480
+                });
+                
+                await camera.start();
+                messageElement.textContent = "Смотрите в камеру и улыбайтесь!";
+                
+                // Установка размеров canvas
+                canvasElement.width = videoElement.videoWidth;
+                canvasElement.height = videoElement.videoHeight;
+                
+            } catch (error) {
+                console.error('Ошибка камеры:', error);
+                messageElement.innerHTML = `
+                    ❌ Ошибка: <strong>${error.message || 'Неизвестная ошибка'}</strong><br>
+                    Пожалуйста:<br>
+                    1. Разрешите доступ к камере<br>
+                    2. Обновите страницу<br>
+                    3. Попробуйте другой браузер`;
+                retryBtn.style.display = 'block';
+            }
+        }
+        
+        // Захват фото
+        function capturePhoto() {
+            // Создаем временный canvas
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = videoElement.videoWidth;
+            tempCanvas.height = videoElement.videoHeight;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            // Рисуем кадр с видео
+            tempCtx.drawImage(videoElement, 0, 0, tempCanvas.width, tempCanvas.height);
+            
+            // Применяем эффекты
+            applyNewspaperEffect(tempCanvas);
+            
+            // Показываем результат
+            capturedPhoto.src = tempCanvas.toDataURL('image/jpeg');
+            dateElement.textContent = new Date().toLocaleDateString('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            
+            // Показываем результат
+            resultSection.style.display = 'block';
+            
+            // Воспроизводим звук
+            playCaptureSound();
+            
+            // Останавливаем камеру
+            if (videoElement.srcObject) {
+                videoElement.srcObject.getTracks().forEach(track => track.stop());
+            }
+        }
+        
+        // Эффект газетной печати
+        function applyNewspaperEffect(canvas) {
+            const ctx = canvas.getContext('2d');
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const data = imageData.data;
+            
+            for (let i = 0; i < data.length; i += 4) {
+                // Преобразуем в оттенки серого
+                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                const noise = Math.random() * 50;
+                
+                // Создаем эффект газетной печати
+                const value = avg > 150 + noise ? 220 : avg > 100 + noise ? 180 : 50;
+                
+                data[i] = data[i + 1] = data[i + 2] = value;
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+        
+        // Звук затвора камеры
+        function playCaptureSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(1500, audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(300, audioContext.currentTime + 0.3);
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start();
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (e) {
+                console.log('Аудио не поддерживается:', e);
+            }
+        }
+        
+        // Кнопка повтора
+        retryBtn.addEventListener('click', () => {
+            window.location.reload();
+        });
+        
+        // Запускаем при загрузке
+        startCamera();
+    </script>
 </body>
 </html>
