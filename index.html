@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Представь, что раскрыла крупное дело)</title>
+    <title>Сможешь ли ты разгадать это дело?</title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
@@ -240,7 +240,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Представь, что раскрыла крупное дело)</h1>
+        <h1>Сможешь ли ты разгадать это дело?</h1>
         
         <div class="camera-box">
             <video id="cameraView" autoplay playsinline></video>
@@ -270,11 +270,11 @@
                 <img id="newspaperPhoto" class="newspaper-photo">
                 
                 <div class="newspaper-content">
-                    <p>Сегодня нашим репортёрам удалось запечатлеть исторический момент - детектив Диана раскрыла одно из самых сложных дел в своей карьере. После месяцев кропотливой работы и анализа улик, преступник наконец-то пойман!</p>
+                    <p>Сегодня нашим репортёрам удалось запечатлеть исторический момент - следователь Диана раскрыла одно из самых сложных дел в своей карьере. После месяцев кропотливой работы и анализа улик, преступник наконец-то пойман!</p>
                     
                     <p>"Это была настоящая битва умов, - рассказывает Диана. - Но справедливость восторжествовала, и теперь город может спать спокойно". По словам коллег, именно её упорство и внимание к деталям помогли раскрыть это дело.</p>
                     
-                    <p>Эксперты отмечают, что подобные успехи становятся возможными благодаря сочетанию профессионализма и искренней преданности делу. "Диана - образец современного детектива", - комментирует комиссар полиции.</p>
+                    <p>Эксперты отмечают, что подобные успехи становятся возможными благодаря сочетанию профессионализма и искренней преданности делу. "Диана - образец современного следователя", - комментирует Кондратьев.</p>
                     
                     <div class="newspaper-quote">
                         "Раскрытие каждого дела - это как решение сложной головоломки. Нужно терпение, настойчивость и вера в то, что правда восторжествует."
@@ -367,7 +367,7 @@
                             } else if (progress > 30) {
                                 messageElement.textContent = `Продолжаем расследование... ${Math.floor(progress)}%`;
                             } else {
-                                messageElement.textContent = `Улыбнись, как настоящий детектив! ${Math.floor(progress)}%`;
+                                messageElement.textContent = `Следователям вредно грустить! ${Math.floor(progress)}%`;
                             }
                         }
                     }
@@ -389,7 +389,6 @@
                 });
                 
                 videoElement.srcObject = stream;
-                messageElement.textContent = "Улыбнись, чтобы раскрыть дело!";
                 
                 // Запускаем обнаружение
                 const camera = new Camera(videoElement, {
