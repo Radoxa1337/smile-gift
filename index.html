@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Сможешь ли ты разгадать это дело?</title>
+    <title>Представь, что раскрыла крупное дело)</title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
@@ -108,6 +108,12 @@
             cursor: pointer;
             margin-top: 10px;
             box-shadow: 0 3px 10px rgba(255, 117, 140, 0.4);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            opacity: 0.9;
         }
         
         /* Стили для газеты */
@@ -178,8 +184,10 @@
         
         .newspaper-photo {
             width: 100%;
+            max-width: 600px;
             border: 3px solid #000;
-            margin: 20px 0;
+            margin: 20px auto;
+            display: block;
             filter: grayscale(30%) contrast(120%);
         }
         
@@ -210,12 +218,28 @@
             background: #8b0000;
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             cursor: pointer;
             z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, background 0.2s;
+        }
+        
+        .close-btn:hover {
+            transform: scale(1.1);
+            background: #a00000;
+        }
+        
+        .newspaper-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
         }
         
         @media (max-width: 768px) {
@@ -234,13 +258,16 @@
             .close-btn {
                 top: 15px;
                 right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Сможешь ли ты разгадать это дело?</h1>
+        <h1>Представь, что раскрыла крупное дело)</h1>
         
         <div class="camera-box">
             <video id="cameraView" autoplay playsinline></video>
@@ -270,11 +297,11 @@
                 <img id="newspaperPhoto" class="newspaper-photo">
                 
                 <div class="newspaper-content">
-                    <p>Сегодня нашим репортёрам удалось запечатлеть исторический момент - следователь Диана раскрыла одно из самых сложных дел в своей карьере. После месяцев кропотливой работы и анализа улик, преступник наконец-то пойман!</p>
+                    <p>Сегодня нашим репортёрам удалось запечатлеть исторический момент - детектив Диана раскрыла одно из самых сложных дел в своей карьере. После месяцев кропотливой работы и анализа улик, преступник наконец-то пойман!</p>
                     
                     <p>"Это была настоящая битва умов, - рассказывает Диана. - Но справедливость восторжествовала, и теперь город может спать спокойно". По словам коллег, именно её упорство и внимание к деталям помогли раскрыть это дело.</p>
                     
-                    <p>Эксперты отмечают, что подобные успехи становятся возможными благодаря сочетанию профессионализма и искренней преданности делу. "Диана - образец современного следователя", - комментирует Кондратьев.</p>
+                    <p>Эксперты отмечают, что подобные успехи становятся возможными благодаря сочетанию профессионализма и искренней преданности делу. "Диана - образец современного детектива", - комментирует комиссар полиции.</p>
                     
                     <div class="newspaper-quote">
                         "Раскрытие каждого дела - это как решение сложной головоломки. Нужно терпение, настойчивость и вера в то, что правда восторжествует."
@@ -282,6 +309,11 @@
                     </div>
                     
                     <p>Редакция поздравляет Диану с этим важным достижением и желает новых профессиональных успехов. Город может гордиться такими защитниками правопорядка!</p>
+                </div>
+                
+                <div class="newspaper-buttons">
+                    <button class="btn" id="saveBtn">Сохранить фото</button>
+                    <button class="btn" id="newPhotoBtn">Сделать новое фото</button>
                 </div>
             </div>
         </div>
@@ -297,13 +329,16 @@
         const newspaperPhoto = document.getElementById('newspaperPhoto');
         const newspaperDate = document.getElementById('newspaperDate');
         const closeBtn = document.getElementById('closeBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const newPhotoBtn = document.getElementById('newPhotoBtn');
         
         // Переменные состояния
         let isSmiling = false;
         let smileCounter = 0;
-        const smileThreshold = 15; // Увеличил количество необходимых кадров с улыбкой
-        let detectionInterval = 100; // Интервал обнаружения (мс)
+        const smileThreshold = 15;
+        let detectionInterval = 100;
         let lastDetectionTime = 0;
+        let currentPhotoBlob = null;
         
         // Инициализация FaceMesh
         const faceMesh = new FaceMesh({
@@ -367,7 +402,7 @@
                             } else if (progress > 30) {
                                 messageElement.textContent = `Продолжаем расследование... ${Math.floor(progress)}%`;
                             } else {
-                                messageElement.textContent = `Следователям вредно грустить! ${Math.floor(progress)}%`;
+                                messageElement.textContent = `Улыбнись, как настоящий детектив! ${Math.floor(progress)}%`;
                             }
                         }
                     }
@@ -383,12 +418,13 @@
                 const stream = await navigator.mediaDevices.getUserMedia({ 
                     video: { 
                         facingMode: 'user',
-                        width: { ideal: 640 },
-                        height: { ideal: 480 }
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 }
                     } 
                 });
                 
                 videoElement.srcObject = stream;
+                messageElement.textContent = "Улыбнись, чтобы раскрыть дело!";
                 
                 // Запускаем обнаружение
                 const camera = new Camera(videoElement, {
@@ -410,55 +446,91 @@
             }
         }
         
-        // Захват фото
+        // Захват фото с высоким качеством
         function capturePhoto() {
             const canvas = document.createElement('canvas');
-            canvas.width = videoElement.videoWidth;
-            canvas.height = videoElement.videoHeight;
+            // Увеличиваем размер canvas для лучшего качества
+            const scaleFactor = 2; // Масштабируем в 2 раза для увеличения качества
+            canvas.width = videoElement.videoWidth * scaleFactor;
+            canvas.height = videoElement.videoHeight * scaleFactor;
             const ctx = canvas.getContext('2d');
             
-            // Делаем снимок
-            ctx.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
+            // Рисуем изображение с масштабированием
+            ctx.scale(scaleFactor, scaleFactor);
+            ctx.drawImage(videoElement, 0, 0, videoElement.videoWidth, videoElement.videoHeight);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
             
             // Применяем эффект газеты
             applyNewspaperEffect(ctx, canvas.width, canvas.height);
             
-            // Показываем результат
-            newspaperPhoto.src = canvas.toDataURL('image/jpeg');
-            newspaperDate.textContent = new Date().toLocaleDateString('ru-RU', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            });
-            
-            // Показываем газету
-            showNewspaper();
-            
-            // Воспроизводим звук
-            playCaptureSound();
-            
-            // Останавливаем камеру
-            if (videoElement.srcObject) {
-                videoElement.srcObject.getTracks().forEach(track => track.stop());
-            }
+            // Конвертируем в Blob с высоким качеством
+            canvas.toBlob((blob) => {
+                currentPhotoBlob = blob;
+                const photoUrl = URL.createObjectURL(blob);
+                newspaperPhoto.src = photoUrl;
+                
+                // Устанавливаем дату
+                newspaperDate.textContent = new Date().toLocaleDateString('ru-RU', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                });
+                
+                // Показываем газету
+                showNewspaper();
+                
+                // Воспроизводим звук
+                playCaptureSound();
+                
+                // Останавливаем камеру
+                if (videoElement.srcObject) {
+                    videoElement.srcObject.getTracks().forEach(track => track.stop());
+                }
+            }, 'image/jpeg', 0.95); // Качество JPEG 95%
         }
         
-        // Эффект газетной печати
+        // Эффект газетной печати (улучшенный)
         function applyNewspaperEffect(ctx, width, height) {
             const imageData = ctx.getImageData(0, 0, width, height);
             const data = imageData.data;
             
+            // Добавляем шум и эффект газеты
             for (let i = 0; i < data.length; i += 4) {
-                const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-                const noise = Math.random() * 40;
-                const value = avg > 150 + noise ? 220 : 
-                             avg > 100 + noise ? 180 : 
-                             avg > 50 + noise ? 120 : 50;
+                // Конвертируем в grayscale с небольшим шумом
+                const noise = Math.random() * 30 - 15;
+                let avg = (data[i] + data[i + 1] + data[i + 2]) / 3 + noise;
+                avg = Math.max(0, Math.min(255, avg));
+                
+                // Усиливаем контраст
+                const contrast = 1.2;
+                avg = (((avg / 255) - 0.5) * contrast + 0.5) * 255;
+                avg = Math.max(0, Math.min(255, avg));
+                
+                // Создаем эффект газеты с градациями серого
+                let value;
+                if (avg > 200) value = 220 + Math.random() * 20;
+                else if (avg > 150) value = 180 + Math.random() * 20;
+                else if (avg > 100) value = 120 + Math.random() * 20;
+                else if (avg > 50) value = 70 + Math.random() * 20;
+                else value = 30 + Math.random() * 20;
                 
                 data[i] = data[i + 1] = data[i + 2] = value;
             }
             
             ctx.putImageData(imageData, 0, 0);
+            
+            // Добавляем легкую текстуру
+            ctx.globalCompositeOperation = 'overlay';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
+            for (let i = 0; i < width * height / 1000; i++) {
+                ctx.fillRect(
+                    Math.random() * width,
+                    Math.random() * height,
+                    Math.random() * 3 + 1,
+                    Math.random() * 3 + 1
+                );
+            }
+            ctx.globalCompositeOperation = 'source-over';
         }
         
         // Показать газету
@@ -468,11 +540,33 @@
             newspaperContainer.scrollTo(0, 0);
         }
         
-        // Скрыть газету
+        // Скрыть газету и перезагрузить страницу
         function hideNewspaper() {
             newspaperContainer.style.display = 'none';
             document.body.style.overflow = 'auto';
+        }
+        
+        // Начать новое фото (перезагрузить страницу)
+        function startNewPhoto() {
+            hideNewspaper();
             window.location.reload();
+        }
+        
+        // Сохранить фото
+        function savePhoto() {
+            if (!currentPhotoBlob) return;
+            
+            const a = document.createElement('a');
+            const url = URL.createObjectURL(currentPhotoBlob);
+            a.href = url;
+            a.download = 'detective-diana-' + new Date().toISOString().slice(0, 10) + '.jpg';
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
         }
         
         // Звук затвора камеры
@@ -482,13 +576,14 @@
             sound.play().catch(e => console.log('Не удалось воспроизвести звук:', e));
         }
         
-        // Кнопка повтора
+        // Обработчики событий
         retryBtn.addEventListener('click', () => {
             window.location.reload();
         });
         
-        // Кнопка закрытия газеты
         closeBtn.addEventListener('click', hideNewspaper);
+        saveBtn.addEventListener('click', savePhoto);
+        newPhotoBtn.addEventListener('click', startNewPhoto);
         
         // Запускаем при загрузке
         startCamera();
