@@ -335,7 +335,7 @@
                         if (isSmile) {
                             smileCounter++;
                             smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
-                            messageElement.textContent = `Улыбка обнаружена! ${smileCounter}/${smileThreshold}`;
+                            messageElement.textContent = `я заметил, ты почти смогла) ${smileCounter}/${smileThreshold}`;
                             
                             if (smileCounter >= smileThreshold && !isSmiling) {
                                 isSmiling = true;
@@ -345,8 +345,8 @@
                             smileCounter = Math.max(0, smileCounter - 1);
                             smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
                             messageElement.textContent = smileCounter > 0 ? 
-                                `Продолжайте улыбаться! ${smileCounter}/${smileThreshold}` : 
-                                "Улыбнитесь шире!";
+                                `ну же, ты поймала крупного злодея ${smileCounter}/${smileThreshold}` : 
+                                "представь, как справедливость торжествует";
                         }
                     }
                 }
@@ -367,7 +367,6 @@
                 });
                 
                 videoElement.srcObject = stream;
-                messageElement.textContent = "Смотрите в камеру и улыбайтесь!";
                 
                 // Запускаем обнаружение
                 const camera = new Camera(videoElement, {
