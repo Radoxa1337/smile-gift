@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Представь, что расскрыла крупное дело)</title>
+    <title>Представь, что раскрыла крупное дело)</title>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
@@ -88,7 +88,7 @@
             width: 0%;
             background: linear-gradient(90deg, #ff758c, #ff7eb3);
             border-radius: 8px;
-            transition: width 0.3s ease;
+            transition: width 0.5s ease;
         }
         
         .message {
@@ -121,7 +121,7 @@
             background: rgba(0,0,0,0.95);
             z-index: 1000;
             padding: 20px;
-            overflow-y: auto; /* Добавляем прокрутку */
+            overflow-y: auto;
         }
         
         .newspaper-wrapper {
@@ -240,7 +240,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Представь, что расскрыла крупное дело)</h1>
+        <h1>Представь, что раскрыла крупное дело)</h1>
         
         <div class="camera-box">
             <video id="cameraView" autoplay playsinline></video>
@@ -270,20 +270,18 @@
                 <img id="newspaperPhoto" class="newspaper-photo">
                 
                 <div class="newspaper-content">
-                    <p>Сегодня нашим фотографам удалось запечатлеть поистине уникальный момент. Эта искренняя улыбка, полная тепла и нежности, стала настоящим открытием дня. По словам очевидцев, в момент съёмки в воздухе витала особая атмосфера счастья.</p>
+                    <p>Сегодня нашим репортёрам удалось запечатлеть исторический момент - детектив Диана раскрыла одно из самых сложных дел в своей карьере. После месяцев кропотливой работы и анализа улик, преступник наконец-то пойман!</p>
                     
-                    <p>Эксперты в области психологии утверждают, что такие проявления эмоций оказывают положительное влияние не только на самого человека, но и на окружающих. "Это пример подлинной эмоциональной открытости", - комментирует доктор психологических наук Елена Смирнова.</p>
+                    <p>"Это была настоящая битва умов, - рассказывает Диана. - Но справедливость восторжествовала, и теперь город может спать спокойно". По словам коллег, именно её упорство и внимание к деталям помогли раскрыть это дело.</p>
                     
-                    <p>Исследования показывают, что искренняя улыбка способна снижать уровень стресса, улучшать настроение и даже укреплять иммунную систему. По данным последних исследований, люди, которые часто улыбаются, живут в среднем на 7 лет дольше.</p>
+                    <p>Эксперты отмечают, что подобные успехи становятся возможными благодаря сочетанию профессионализма и искренней преданности делу. "Диана - образец современного детектива", - комментирует комиссар полиции.</p>
                     
                     <div class="newspaper-quote">
-                        "В мире, где так много фальши, настоящая улыбка становится редким сокровищем. Она способна растопить лёд даже в самых холодных сердцах и напомнить нам о том, что истинное счастье - в простых моментах."
-                        <footer>— Профессор И. Петров</footer>
+                        "Раскрытие каждого дела - это как решение сложной головоломки. Нужно терпение, настойчивость и вера в то, что правда восторжествует."
+                        <footer>— Диана, детектив</footer>
                     </div>
                     
-                    <p>Редакция рекомендует сохранить этот снимок как напоминание о прекрасных моментах. Пусть он вдохновляет вас дарить тепло окружающим и находить поводы для радости в повседневной жизни.</p>
-                    
-                    <p>Как показывает практика, даже небольшая улыбка может изменить весь день. Попробуйте улыбнуться незнакомцу - и вы увидите, как мир станет немного добрее.</p>
+                    <p>Редакция поздравляет Диану с этим важным достижением и желает новых профессиональных успехов. Город может гордиться такими защитниками правопорядка!</p>
                 </div>
             </div>
         </div>
@@ -303,7 +301,9 @@
         // Переменные состояния
         let isSmiling = false;
         let smileCounter = 0;
-        const smileThreshold = 5;
+        const smileThreshold = 15; // Увеличил количество необходимых кадров с улыбкой
+        let detectionInterval = 100; // Интервал обнаружения (мс)
+        let lastDetectionTime = 0;
         
         // Инициализация FaceMesh
         const faceMesh = new FaceMesh({
@@ -323,6 +323,10 @@
         
         // Функция обработки результатов
         function onFaceResults(results) {
+            const now = Date.now();
+            if (now - lastDetectionTime < detectionInterval) return;
+            lastDetectionTime = now;
+            
             if (results.multiFaceLandmarks) {
                 for (const landmarks of results.multiFaceLandmarks) {
                     const leftMouth = landmarks[61];
@@ -334,19 +338,37 @@
                         
                         if (isSmile) {
                             smileCounter++;
-                            smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
-                            messageElement.textContent = `я заметил, ты почти смогла) ${smileCounter}/${smileThreshold}`;
+                            const progress = Math.min(100, (smileCounter / smileThreshold) * 100);
+                            smileProgress.style.width = `${progress}%`;
+                            
+                            // Динамические сообщения
+                            if (progress < 30) {
+                                messageElement.textContent = `Так, начинаем расследование... ${Math.floor(progress)}%`;
+                            } else if (progress < 60) {
+                                messageElement.textContent = `Собираем улики... ${Math.floor(progress)}%`;
+                            } else if (progress < 90) {
+                                messageElement.textContent = `Приближаемся к разгадке! ${Math.floor(progress)}%`;
+                            } else {
+                                messageElement.textContent = `Почти раскрыла дело! ${Math.floor(progress)}%`;
+                            }
                             
                             if (smileCounter >= smileThreshold && !isSmiling) {
                                 isSmiling = true;
                                 capturePhoto();
                             }
                         } else {
-                            smileCounter = Math.max(0, smileCounter - 1);
-                            smileProgress.style.width = `${Math.min(100, smileCounter * 20)}%`;
-                            messageElement.textContent = smileCounter > 0 ? 
-                                `ну же, ты поймала крупного злодея ${smileCounter}/${smileThreshold}` : 
-                                "представь, как справедливость торжествует";
+                            // Медленнее уменьшаем прогресс при отсутствии улыбки
+                            smileCounter = Math.max(0, smileCounter - 0.5);
+                            const progress = Math.min(100, (smileCounter / smileThreshold) * 100);
+                            smileProgress.style.width = `${progress}%`;
+                            
+                            if (progress > 70) {
+                                messageElement.textContent = `Не сдавайся, осталось немного! ${Math.floor(progress)}%`;
+                            } else if (progress > 30) {
+                                messageElement.textContent = `Продолжаем расследование... ${Math.floor(progress)}%`;
+                            } else {
+                                messageElement.textContent = `Улыбнись, как настоящий детектив! ${Math.floor(progress)}%`;
+                            }
                         }
                     }
                 }
@@ -355,7 +377,7 @@
         
         // Запуск камеры
         async function startCamera() {
-            messageElement.textContent = "Запрашиваю доступ к камере...";
+            messageElement.textContent = "Инициализируем детективные инструменты...";
             
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -367,6 +389,7 @@
                 });
                 
                 videoElement.srcObject = stream;
+                messageElement.textContent = "Улыбнись, чтобы раскрыть дело!";
                 
                 // Запускаем обнаружение
                 const camera = new Camera(videoElement, {
@@ -427,11 +450,8 @@
             const data = imageData.data;
             
             for (let i = 0; i < data.length; i += 4) {
-                // Преобразуем в оттенки серого
                 const avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
                 const noise = Math.random() * 40;
-                
-                // Эффект газетной печати с шумом
                 const value = avg > 150 + noise ? 220 : 
                              avg > 100 + noise ? 180 : 
                              avg > 50 + noise ? 120 : 50;
@@ -446,8 +466,6 @@
         function showNewspaper() {
             newspaperContainer.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            
-            // Прокручиваем вверх газеты
             newspaperContainer.scrollTo(0, 0);
         }
         
